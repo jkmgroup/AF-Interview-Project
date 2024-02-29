@@ -9,9 +9,9 @@
 		public Item GetItem(bool disposeHolder)
 		{
 			if (disposeHolder)
-				Destroy(gameObject);
-			
-			return item;
+				ItemsPool.Instance.AddObject(gameObject);
+
+			return item.Clone();
 		}
 	}
 }

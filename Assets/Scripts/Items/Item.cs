@@ -18,6 +18,11 @@
 			this.value = value;
 		}
 
+		public virtual Item Clone()
+		{
+			return new Item(name, value);
+		}
+
 		public void Use()
 		{
 			Debug.Log("Using" + Name);

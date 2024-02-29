@@ -1,5 +1,7 @@
 ﻿namespace AFSInterview.Items
 {
+	using System;
+	using System.Collections;
 	using TMPro;
 	using UnityEngine;
 
@@ -13,11 +15,25 @@
 		[SerializeField] private float itemSpawnInterval;
 
 		private float nextItemSpawnTime;
+		private TextMeshProUGUI moneyText;
 		
+		#region Validata
+		private void Validata()
+		{
+			if (!moneyText)
+				GameTools.CriticalError("No object TextMeshProUGUI in scene. To show money info! ");
+		}
+		#endregion //validata
+
+		private void Start()
+		{
+			moneyText = FindObjectOfType<TextMeshProUGUI>();
+			Validata();
+			StartCoroutine(SpawnNewItem());
+		}
+
 		private void Update()
 		{
-			if (Time.time >= nextItemSpawnTime)
-				SpawnNewItem();
 			
 			if (Input.GetMouseButtonDown(0))
 				TryPickUpItem();
@@ -25,21 +41,22 @@
 			if (Input.GetKeyDown(KeyCode.Space))
 				inventoryController.SellAllItemsUpToValue(itemSellMaxValue);
 
-			FindObjectOfType<TextMeshProUGUI>().text = "Money: " + inventoryController.Money;
+			moneyText.text = "Money: " + inventoryController.Money;
 		}
 
-		private void SpawnNewItem()
+		private IEnumerator SpawnNewItem()
 		{
-			nextItemSpawnTime = Time.time + itemSpawnInterval;
-			
-			var spawnAreaBounds = itemSpawnArea.bounds;
-			var position = new Vector3(
-				Random.Range(spawnAreaBounds.min.x, spawnAreaBounds.max.x),
-				0f,
-				Random.Range(spawnAreaBounds.min.z, spawnAreaBounds.max.z)
-			);
-			
-			Instantiate(itemPrefab, position, Quaternion.identity, itemSpawnParent);
+			while (true)
+			{
+				yield return new WaitForSeconds(itemSpawnInterval);
+				var spawnAreaBounds = itemSpawnArea.bounds;
+				var obj = ItemsPool.Instance.GetObject(itemPrefab, (gameObject) =>
+				{
+					gameObject.transform.position = GameTools.CreateRandVectorXZ(spawnAreaBounds.min, spawnAreaBounds.max, 0.0f);
+					gameObject.transform.rotation = Quaternion.identity;
+					gameObject.transform.parent = itemSpawnParent;
+				});
+			}
 		}
 
 		private void TryPickUpItem()
