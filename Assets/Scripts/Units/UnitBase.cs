@@ -16,7 +16,45 @@ namespace AFSInterview.Units
 		[SerializeField] private int armor = 100;
 		[SerializeField] private int attackInterval = 2;
 		[SerializeField] private int attackDamage = 20;
-		public int AttackDamage => attackDamage;
+
+		#region GetSet
+		public bool AttributeLight
+		{
+			get => attributeLight;
+			set => attributeLight = value;
+		}
+		public bool AttributeArmored
+		{
+			get => attributeArmored;
+			set => attributeArmored = value;
+		}
+		public bool AttributeMechanical
+		{
+			get => attributeMechanical;
+			set => attributeMechanical = value;
+		}
+		public int Health
+		{
+			get => health;
+			set => health = value;
+		}
+		public int Armor
+		{
+			get => armor;
+			set => armor = value;
+		}
+		public int AttackInterval
+		{
+			get => attackInterval;
+			set => attackInterval = value;
+		}
+		public int AttackDamage
+		{
+			get => attackDamage;
+			set => attackDamage = value;
+		}
+		#endregion //GetSet
+
 
 		private UnitStateMachine unitStateMachine;
 

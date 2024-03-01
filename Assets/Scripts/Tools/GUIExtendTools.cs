@@ -31,5 +31,26 @@ namespace AFSInterview
 			GUILayout.EndHorizontal();
 			return rezult;
 		}
+
+		static public int SliderInt(string lable, int value, int min, int max)
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(lable);
+			var rezult = (int)EditorGUILayout.Slider((float)value, (float)min, (float)max);
+			GUILayout.EndHorizontal();
+			return rezult;
+		}
+
+		public static bool Toggle(string lable, bool value, bool enable)
+		{
+			var oldEnabled = GUI.enabled;
+			GUI.enabled = enable;
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(lable);
+			var rezult = GUILayout.Toggle(value, "");
+			GUILayout.EndHorizontal();
+			GUI.enabled = oldEnabled;
+			return rezult;
+		}
 	}
 }
