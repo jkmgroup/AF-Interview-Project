@@ -22,6 +22,8 @@ namespace AFSInterview.Combat
 
 		[SerializeField]
 		private List<Army> armies;
+		public List<Army> Armies => armies;
+
 		[SerializeField]
 		private List<UnitBase> units;
 
@@ -45,7 +47,10 @@ namespace AFSInterview.Combat
 			{
 				var armyUnits = army.GetComponentsInChildren<UnitBase>();
 				foreach (var unit in armyUnits)
+				{
+					unit.CombatManager = this;
 					units.Add(unit);
+				}
 			}
 			units = GameTools.MakeRandom(units);
 		}

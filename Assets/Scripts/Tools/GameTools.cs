@@ -65,5 +65,11 @@ namespace AFSInterview
 			var index = Random.Range(0, items.Length);
 			return items[index];
 		}
+
+		static public T GetRandomItem<T>(List<T> items)
+		{
+			var index = Random.Range(0, items.Count);
+			return items[index];
+		}
 	}
 }

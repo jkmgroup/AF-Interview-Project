@@ -7,28 +7,59 @@ namespace AFSInterview.Units
 {
     public class UnitBase : MonoBehaviour
     {
-		public enum Stage { Wait, SearchForTarget, TryFoundTargetAndShoot };
-		[SerializeField]
-		protected bool attributeLight = true;
-		[SerializeField]
-		protected bool attributeArmored;
-		[SerializeField]
-		protected bool attributeMechanical;
-		[SerializeField]
-		protected int health = 100;
-		[SerializeField]
-		protected int armor = 100;
-		[SerializeField]
-		protected int attackInterval = 2;
-		[SerializeField]
-		protected int attackDamage = 20;
+		public enum Stage { Wait, TryFoundTargetAndShoot };
 
-		
-		public void TakeDamage()
+		[SerializeField] private bool attributeLight = true;
+		[SerializeField] private bool attributeArmored;
+		[SerializeField] private bool attributeMechanical;
+		[SerializeField] private int health = 100;
+		[SerializeField] private int armor = 100;
+		[SerializeField] private int attackInterval = 2;
+		[SerializeField] private int attackDamage = 20;
+		public int AttackDamage => attackDamage;
+
+		private UnitStateMachine unitStateMachine;
+
+		private bool isDead;
+		public bool IsDead => isDead;
+
+		private int waitTures;
+
+		public Combat.CombatManager CombatManager
 		{
-			health -= Mathf.Max(attackDamage - armor, 1);
+			get;set;
+		}
+
+		public void Start()
+		{
+			unitStateMachine = new UnitStateMachine(this);
+			waitTures = attackInterval;
+		}
+
+		public bool IsActiveInThisTure()
+		{
+			if (isDead)
+				return false;
+			waitTures--;
+			if (waitTures<=0)
+			{
+				waitTures = attackInterval;
+				return true;
+			}
+			return false;
+		}
+
+		public void TakeDamage(int damage)
+		{
+			health -= Mathf.Max(damage - armor, 1);
 			if (health <= 0)
-				DestroyUnit();
+			{
+				isDead = true;
+				unitStateMachine.ChangeState(new DestroyUnitState());
+				Debug.Log(name + " was destroy!");
+			}
+			else
+				unitStateMachine.ChangeState(new HitUnitState()); 
 		}
 
 		private void DestroyUnit()
@@ -38,7 +69,18 @@ namespace AFSInterview.Units
 
 		public void ChangeStage(Stage stage)
 		{
-			Debug.Log("Unit " + name + " stage " + stage.ToString());
+			switch (stage)
+			{
+				case Stage.TryFoundTargetAndShoot:
+					unitStateMachine.ChangeState(new TryFoundTargetAndShotState()); break;
+				case Stage.Wait:
+					unitStateMachine.ChangeState(new WaitState()); break;
+			}
+		}
+
+		private void Update()
+		{
+			unitStateMachine.Update();
 		}
 	}
 }

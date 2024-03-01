@@ -49,8 +49,8 @@ MonoBehaviour:
   attributeArmored: 0
   attributeMechanical: 0
   health: 100
-  armor: 100
-  attackInterval: 2
+  armor: 20
+  attackInterval: 1
   attackDamage: 20
 --- !u!1 &3042539480547719743
 GameObject:
@@ -187,9 +187,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9060871558229852082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.504, z: 0.537}
-  m_LocalScale: {x: 0.23, y: 0.20535715, z: 0.23821428}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0.504, z: 0.797}
+  m_LocalScale: {x: 0.23, y: 0.20535715, z: 0.84}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4753119048223459923}
   m_RootOrder: -1

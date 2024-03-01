@@ -15,7 +15,7 @@ namespace AFSInterview.Combat
 			var armys = new Dictionary<Transform, int>();
 			for (var i = units.Count-1; i >= 0; i--)
 			{
-				if (units[i] == null)
+				if (units[i] == null || units[i].IsDead)
 					units.RemoveAt(i);
 				else
 				{
