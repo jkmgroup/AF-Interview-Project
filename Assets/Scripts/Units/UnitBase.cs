@@ -7,6 +7,7 @@ namespace AFSInterview.Units
 {
     public class UnitBase : MonoBehaviour
     {
+		public enum Stage { Wait, SearchForTarget, TryFoundTargetAndShoot };
 		[SerializeField]
 		protected bool attributeLight = true;
 		[SerializeField]
@@ -22,6 +23,7 @@ namespace AFSInterview.Units
 		[SerializeField]
 		protected int attackDamage = 20;
 
+		
 		public void TakeDamage()
 		{
 			health -= Mathf.Max(attackDamage - armor, 1);
@@ -32,6 +34,11 @@ namespace AFSInterview.Units
 		private void DestroyUnit()
 		{
 			GameObject.Destroy(gameObject);
+		}
+
+		public void ChangeStage(Stage stage)
+		{
+			Debug.Log("Unit " + name + " stage " + stage.ToString());
 		}
 	}
 }

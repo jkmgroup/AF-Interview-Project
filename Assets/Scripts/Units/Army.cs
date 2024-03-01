@@ -21,7 +21,7 @@ namespace AFSInterview.Units
 		[SerializeField]
 		float forwardAngle = 0.0f;
 
-		private void Start()
+		private void Awake()
 		{
 			var min = transform.position - Vector3.one * armySpawnFieldSize*0.5f;
 			var max = transform.position + Vector3.one * armySpawnFieldSize*0.5f;

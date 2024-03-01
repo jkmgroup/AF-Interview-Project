@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AFSInterview.Units;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,6 +33,26 @@ namespace AFSInterview
 			for (var i = 0; i < rezult.Length; i++)
 				rezult[i] = createNew(values[i]);
 			return rezult;
+		}
+
+		static public List<T> MakeRandom<T>(List<T> values)
+		{
+			var randomList = new List<T>();
+			foreach (var value in values)
+				randomList.Add(value);
+			for (var i = 0; i < randomList.Count - 1; i++)
+			{
+				var index = Random.Range(i, randomList.Count);
+				FlipIndexes(randomList, i, index);
+			}
+			return randomList;
+		}
+
+		static public void FlipIndexes<T>(List<T> values, int a, int b)
+		{
+			var tmp = values[a];
+			values[a] = values[b];
+			values[b] = tmp;
 		}
 
 		static public bool InRange<T>(List<T> items, int index)
