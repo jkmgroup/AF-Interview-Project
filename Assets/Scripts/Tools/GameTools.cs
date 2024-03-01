@@ -38,5 +38,11 @@ namespace AFSInterview
 		{
 			return index > -1 && index < items.Count;
 		}
+
+		static public T GetRandomItem<T>(T[] items)
+		{
+			var index = Random.Range(0, items.Length);
+			return items[index];
+		}
 	}
 }

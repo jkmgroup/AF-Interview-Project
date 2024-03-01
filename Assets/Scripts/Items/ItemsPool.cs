@@ -28,7 +28,6 @@ namespace AFSInterview
 			if (instance == null)
 			{
 				instance = this;
-				DontDestroyOnLoad(this.gameObject);
 			}
 			else if (instance != this)
 			{

@@ -6,26 +6,35 @@
 	[Serializable]
 	public class Item
 	{
-		[SerializeField] private string name;
-		[SerializeField] private int value;
+		[SerializeField] protected string name;
+		[SerializeField] protected int price;
 
-		public string Name => name;
-		public int Value => value;
+		public string Name
+		{
+			get => name;
+			set => name = value;
+		}
 
-		public Item(string name, int value)
+		public int Price
+		{
+			get => price;
+			set => price = value;
+		}
+
+		public Item(string name, int price)
 		{
 			this.name = name;
-			this.value = value;
+			this.price = price;
 		}
 
 		public virtual Item Clone()
 		{
-			return new Item(name, value);
+			return new Item(name, price);
 		}
 
-		public void Use()
+		public virtual void Use(InventoryController inventoryController)
 		{
 			Debug.Log("Using" + Name);
-		}
+		}		
 	}
 }

@@ -10,38 +10,32 @@
 		[SerializeField] private InventoryController inventoryController;
 		[SerializeField] private int itemSellMaxValue;
 		[SerializeField] private Transform itemSpawnParent;
-		[SerializeField] private GameObject itemPrefab;
+		[SerializeField] private GameObject[] itemPrefabs;
 		[SerializeField] private BoxCollider itemSpawnArea;
 		[SerializeField] private float itemSpawnInterval;
 
 		private float nextItemSpawnTime;
-		private TextMeshProUGUI moneyText;
 		
-		#region Validata
-		private void Validata()
-		{
-			if (!moneyText)
-				GameTools.CriticalError("No object TextMeshProUGUI in scene. To show money info! ");
-		}
-		#endregion //validata
-
 		private void Start()
 		{
-			moneyText = FindObjectOfType<TextMeshProUGUI>();
-			Validata();
 			StartCoroutine(SpawnNewItem());
 		}
 
 		private void Update()
 		{
-			
+			UpdateInputs();
+		}
+
+		private void UpdateInputs()
+		{
 			if (Input.GetMouseButtonDown(0))
 				TryPickUpItem();
-			
+
 			if (Input.GetKeyDown(KeyCode.Space))
 				inventoryController.SellAllItemsUpToValue(itemSellMaxValue);
 
-			moneyText.text = "Money: " + inventoryController.Money;
+			if (Input.GetKeyDown(KeyCode.U))
+				inventoryController.UseAllConsumableItems();
 		}
 
 		private IEnumerator SpawnNewItem()
@@ -50,7 +44,7 @@
 			{
 				yield return new WaitForSeconds(itemSpawnInterval);
 				var spawnAreaBounds = itemSpawnArea.bounds;
-				var obj = ItemsPool.Instance.GetObject(itemPrefab, (gameObject) =>
+				var obj = ItemsPool.Instance.GetObject(GameTools.GetRandomItem(itemPrefabs), (gameObject) =>
 				{
 					gameObject.transform.position = GameTools.CreateRandVectorXZ(spawnAreaBounds.min, spawnAreaBounds.max, 0.0f);
 					gameObject.transform.rotation = Quaternion.identity;
@@ -65,10 +59,10 @@
 			var layerMask = LayerMask.GetMask("Item");
 			if (!Physics.Raycast(ray, out var hit, 100f, layerMask) || !hit.collider.TryGetComponent<IItemHolder>(out var itemHolder))
 				return;
-			
+
 			var item = itemHolder.GetItem(true);
-            inventoryController.AddItem(item);
-            Debug.Log("Picked up " + item.Name + " with value of " + item.Value + " and now have " + inventoryController.ItemsCount + " items");
+			inventoryController.AddItem(item);
+			Debug.Log("Picked up " + item.Name + " with price of " + item.Price + " and now have " + inventoryController.ItemsCount + " items");
 		}
 	}
 }
